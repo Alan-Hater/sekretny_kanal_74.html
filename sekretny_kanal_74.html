@@ -83,18 +83,18 @@
             user-select: none;
         }
 
-        /* Ukryty glitch z kodem gry */
+        /* Zmodyfikowany glitch z mniejszym kodem */
         .code-glitch {
             display: none;
             position: absolute;
-            font-size: 3.5rem;
+            font-size: 2rem; /* Zmniejszono z 3.5rem na 2rem */
             font-weight: bold;
             color: #ff3333;
-            text-shadow: 0 0 15px #ff0000;
+            text-shadow: 0 0 10px #ff0000;
             background: #000;
-            padding: 10px 30px;
-            border: 2px solid #ff3333;
-            letter-spacing: 5px;
+            padding: 8px 20px;
+            border: 1px solid #ff3333;
+            letter-spacing: 3px;
             animation: flicker 0.1s infinite;
         }
 
@@ -184,7 +184,6 @@
     <div class="video-player-sim">
         <div class="video-screen">
             <div class="video-text" id="video-status">[ STRUMIEŃ ZATRZYMANY. WCIŚNIJ PLAY ]</div>
-            <!-- To jest moment krytyczny zagadki, tu ukrywamy kod -->
             <div class="code-glitch" id="secret-code">D76h4N</div>
         </div>
         <div class="video-controls">
@@ -196,7 +195,7 @@
     </div>
 
     <p class="instruction">
-        Wskazówka: Złośliwe oprogramowanie próbuje wymazać ten plik. Klucz mignie na czerwono w okolicach połowy nagrania. Musisz wykazać się doskonałym refleksem i zatrzymać wideo w ułamku sekundy, w którym nastąpi awaria sygnału.
+        Wskazówka: Złośliwe oprogramowanie próbuje wymazać ten plik. Klucz mignie na czerwono w okolicach połowania nagrania. Musisz wykazać się doskonałym refleksem i zatrzymać wideo w ułamku sekundy, w którym nastąpi awaria sygnału.
     </p>
 
     <a href="index.html" class="terminal-link" id="next-step-link">>> PRZEJDŹ DO GŁÓWNEGO TERMINALA SEJFU AFI</a>
@@ -215,27 +214,24 @@
 
     function toggleVideo() {
         if (isPlaying) {
-            // ZATRZYMANIE WIDEO
             isPlaying = false;
             controlBtn.innerText = "PLAY";
             statusText.innerText = "[ STRUMIEŃ ZATRZYMANIEM AKTYWNY ]";
             clearInterval(interval);
             
-            // Jeśli gracz zatrzymał wideo dokładnie tam gdzie migał kod, to kod zostaje na ekranie!
-            if (progress >= 45 && progress <= 52) {
+            // Zmniejszony przedział tolerancji (teraz gracz musi trafić idealnie między 48% a 51%)
+            if (progress >= 48 && progress <= 51) {
                 statusText.innerText = "[ SYGNAŁ ZABLOKOWANY NA KLATCE BŁĘDU ]";
                 codeDiv.style.display = "block";
-                nextLink.style.display = "block"; // Pokazujemy link do sejfu
+                nextLink.style.display = "block";
             } else {
                 codeDiv.style.display = "none";
             }
         } else {
-            // URUCHOMIENIE WIDEO
             isPlaying = true;
             controlBtn.innerText = "PAUSE";
             codeDiv.style.display = "none";
             
-            // Reset jeśli doszło do końca
             if (progress >= 100) {
                 progress = 0;
                 nextLink.style.display = "none";
@@ -246,8 +242,8 @@
                 progressBar.style.width = progress + "%";
                 statusText.innerText = `[ ODTWARZANIE STRUMIENIA CYFROWEGO... ${progress}% ]`;
 
-                // MOMENT KRYTYCZNY: Pomiędzy 45% a 52% postępu kod miga na ekranie
-                if (progress >= 45 && progress <= 52) {
+                // Skrócony czas widoczności (kod miga teraz tylko od 48% do 51% - ułamek sekundy!)
+                if (progress >= 48 && progress <= 51) {
                     statusText.innerText = "[ !!! WARNING: SIGNAL CORRUPTION DETECTED !!! ]";
                     codeDiv.style.display = "block";
                 } else {
@@ -260,7 +256,7 @@
                     statusText.innerText = "[ KONIEC TRANSMISJI. BRAK SYGNAŁU ]";
                     clearInterval(interval);
                 }
-            }, 150); // Szybkość odtwarzania (150ms na każdy procent)
+            }, 150);
         }
     }
 </script>
