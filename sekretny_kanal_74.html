@@ -51,7 +51,6 @@
             font-size: 0.95rem;
         }
 
-        /* Symulacja zaawansowanego odtwarzacza wideo AFI */
         .video-player-sim {
             width: 100%;
             height: 380px;
@@ -65,7 +64,6 @@
             overflow: hidden;
         }
 
-        /* Szum i zakłócenia na ekranie wideo */
         .video-screen {
             flex-grow: 1;
             width: 100%;
@@ -83,11 +81,10 @@
             user-select: none;
         }
 
-        /* Zmodyfikowany glitch z mniejszym kodem */
         .code-glitch {
             display: none;
             position: absolute;
-            font-size: 2rem; /* Zmniejszono z 3.5rem na 2rem */
+            font-size: 2rem;
             font-weight: bold;
             color: #ff3333;
             text-shadow: 0 0 10px #ff0000;
@@ -195,7 +192,7 @@
     </div>
 
     <p class="instruction">
-        Wskazówka: Złośliwe oprogramowanie próbuje wymazać ten plik. Klucz mignie na czerwono w okolicach połowania nagrania. Musisz wykazać się doskonałym refleksem i zatrzymać wideo w ułamku sekundy, w którym nastąpi awaria sygnału.
+        Wskazówka: Złośliwe oprogramowanie próbuje wymazać ten plik. Klucz mignie na czerwono dokładnie w połowie nagrania. Musisz wykazać się doskonałym refleksem i zatrzymać wideo w ułamku sekundy, w którym nastąpi awaria sygnału.
     </p>
 
     <a href="index.html" class="terminal-link" id="next-step-link">>> PRZEJDŹ DO GŁÓWNEGO TERMINALA SEJFU AFI</a>
@@ -216,11 +213,11 @@
         if (isPlaying) {
             isPlaying = false;
             controlBtn.innerText = "PLAY";
-            statusText.innerText = "[ STRUMIEŃ ZATRZYMANIEM AKTYWNY ]";
+            statusText.innerText = "[ STRUMIEŃ ZATRZYMANY ]";
             clearInterval(interval);
             
-            // Zmniejszony przedział tolerancji (teraz gracz musi trafić idealnie między 48% a 51%)
-            if (progress >= 48 && progress <= 51) {
+            // Gracz musi trafić IDEALNIE w 50% postępu wideo
+            if (progress === 50) {
                 statusText.innerText = "[ SYGNAŁ ZABLOKOWANY NA KLATCE BŁĘDU ]";
                 codeDiv.style.display = "block";
                 nextLink.style.display = "block";
@@ -242,8 +239,8 @@
                 progressBar.style.width = progress + "%";
                 statusText.innerText = `[ ODTWARZANIE STRUMIENIA CYFROWEGO... ${progress}% ]`;
 
-                // Skrócony czas widoczności (kod miga teraz tylko od 48% do 51% - ułamek sekundy!)
-                if (progress >= 48 && progress <= 51) {
+                // Kod aktywuje się WYŁĄCZNIE gdy pasek ma równe 50%
+                if (progress === 50) {
                     statusText.innerText = "[ !!! WARNING: SIGNAL CORRUPTION DETECTED !!! ]";
                     codeDiv.style.display = "block";
                 } else {
