@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AFI // STREAM_INTERCEPT_NODE</title>
+    <style>
+        body {
+            background-color: #050505;
+            color: #dcdcdc;
+            font-family: 'Courier New', Courier, monospace;
+            padding: 30px;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            box-sizing: border-box;
+        }
+
+        .container {
+            max-width: 850px;
+            width: 100%;
+            background: #111;
+            border: 1px solid #333;
+            padding: 30px;
+            box-shadow: 0 0 25px rgba(0,0,0,0.8);
+        }
+
+        .header {
+            border-bottom: 2px solid #00ffff;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .title {
+            color: #00ffff;
+            font-weight: bold;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+        }
+
+        .mail-meta {
+            background: #161616;
+            padding: 15px;
+            border-left: 3px solid #00ffff;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+        }
+
+        /* Symulacja zaawansowanego odtwarzacza wideo AFI */
+        .video-player-sim {
+            width: 100%;
+            height: 380px;
+            background: #000;
+            border: 1px solid #222;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        /* Szum i zakłócenia na ekranie wideo */
+        .video-screen {
+            flex-grow: 1;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            background: radial-gradient(circle, #05100c 0%, #000 100%);
+        }
+
+        .video-text {
+            font-size: 1.2rem;
+            text-align: center;
+            color: #555;
+            user-select: none;
+        }
+
+        /* Ukryty glitch z kodem gry */
+        .code-glitch {
+            display: none;
+            position: absolute;
+            font-size: 3.5rem;
+            font-weight: bold;
+            color: #ff3333;
+            text-shadow: 0 0 15px #ff0000;
+            background: #000;
+            padding: 10px 30px;
+            border: 2px solid #ff3333;
+            letter-spacing: 5px;
+            animation: flicker 0.1s infinite;
+        }
+
+        .video-controls {
+            width: 100%;
+            background: #161616;
+            padding: 10px;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            border-top: 1px solid #222;
+        }
+
+        .play-btn {
+            background: #00ffff;
+            color: #000;
+            border: none;
+            padding: 6px 15px;
+            font-family: inherit;
+            font-weight: bold;
+            cursor: pointer;
+            margin-right: 15px;
+        }
+
+        .play-btn:hover { background: #fff; }
+
+        .timeline {
+            flex-grow: 1;
+            height: 6px;
+            background: #333;
+            position: relative;
+        }
+
+        .progress {
+            width: 0%;
+            height: 100%;
+            background: #00ffff;
+            position: absolute;
+            top: 0; left: 0;
+        }
+
+        @keyframes flicker {
+            0% { opacity: 0.9; transform: skewX(-2deg); }
+            50% { opacity: 1; transform: skewX(2deg); }
+            100% { opacity: 0.8; transform: skewX(0deg); }
+        }
+
+        .instruction {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #888;
+            font-style: italic;
+        }
+
+        .terminal-link {
+            display: none;
+            margin-top: 25px;
+            text-align: center;
+            padding: 15px;
+            background: #051510;
+            border: 1px solid #00ff66;
+            color: #00ff66;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        .terminal-link:hover { background: #00ff66; color: #000; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <span class="title">AFI // MAIL INTERCEPTION NETWORK</span>
+        <span style="color: #666; font-size: 0.85rem;">SESSION_ID: 0x99F2</span>
+    </div>
+
+    <div class="mail-meta">
+        <b>NADAWCA:</b> lab-core-relay-backup@gmail.internal [Zaszyfrowano przez AFI-Shield]<br>
+        <b>DO:</b> general-directorate@afi.gov<br>
+        <b>TEMAT:</b> Ostatnia rejestracja wizualna — Blokada Rdzenia Hally.
+    </div>
+
+    <p style="font-size: 0.95rem; margin-bottom: 20px;">
+        Poniższy strumień wideo został przechwycony z zewnętrznego przekaźnika pocztowego. Sygnał jest uszkodzony z powodu aktywacji protokołów destrukcji danych przez podmiot autonomiczny. Musisz przeanalizować nagranie klatka po klatce. Zakłócenie zawierające klucz autoryzacji pojawia się tylko raz.
+    </p>
+
+    <div class="video-player-sim">
+        <div class="video-screen">
+            <div class="video-text" id="video-status">[ STRUMIEŃ ZATRZYMANY. WCIŚNIJ PLAY ]</div>
+            <!-- To jest moment krytyczny zagadki, tu ukrywamy kod -->
+            <div class="code-glitch" id="secret-code">D76h4N</div>
+        </div>
+        <div class="video-controls">
+            <button class="play-btn" id="control-btn" onclick="toggleVideo()">PLAY</button>
+            <div class="timeline">
+                <div class="progress" id="video-progress"></div>
+            </div>
+        </div>
+    </div>
+
+    <p class="instruction">
+        Wskazówka: Złośliwe oprogramowanie próbuje wymazać ten plik. Klucz mignie na czerwono w okolicach połowy nagrania. Musisz wykazać się doskonałym refleksem i zatrzymać wideo w ułamku sekundy, w którym nastąpi awaria sygnału.
+    </p>
+
+    <a href="index.html" class="terminal-link" id="next-step-link">>> PRZEJDŹ DO GŁÓWNEGO TERMINALA SEJFU AFI</a>
+</div>
+
+<script>
+    let isPlaying = false;
+    let progress = 0;
+    let interval;
+
+    const statusText = document.getElementById("video-status");
+    const codeDiv = document.getElementById("secret-code");
+    const progressBar = document.getElementById("video-progress");
+    const controlBtn = document.getElementById("control-btn");
+    const nextLink = document.getElementById("next-step-link");
+
+    function toggleVideo() {
+        if (isPlaying) {
+            // ZATRZYMANIE WIDEO
+            isPlaying = false;
+            controlBtn.innerText = "PLAY";
+            statusText.innerText = "[ STRUMIEŃ ZATRZYMANIEM AKTYWNY ]";
+            clearInterval(interval);
+            
+            // Jeśli gracz zatrzymał wideo dokładnie tam gdzie migał kod, to kod zostaje na ekranie!
+            if (progress >= 45 && progress <= 52) {
+                statusText.innerText = "[ SYGNAŁ ZABLOKOWANY NA KLATCE BŁĘDU ]";
+                codeDiv.style.display = "block";
+                nextLink.style.display = "block"; // Pokazujemy link do sejfu
+            } else {
+                codeDiv.style.display = "none";
+            }
+        } else {
+            // URUCHOMIENIE WIDEO
+            isPlaying = true;
+            controlBtn.innerText = "PAUSE";
+            codeDiv.style.display = "none";
+            
+            // Reset jeśli doszło do końca
+            if (progress >= 100) {
+                progress = 0;
+                nextLink.style.display = "none";
+            }
+
+            interval = setInterval(() => {
+                progress += 1;
+                progressBar.style.width = progress + "%";
+                statusText.innerText = `[ ODTWARZANIE STRUMIENIA CYFROWEGO... ${progress}% ]`;
+
+                // MOMENT KRYTYCZNY: Pomiędzy 45% a 52% postępu kod miga na ekranie
+                if (progress >= 45 && progress <= 52) {
+                    statusText.innerText = "[ !!! WARNING: SIGNAL CORRUPTION DETECTED !!! ]";
+                    codeDiv.style.display = "block";
+                } else {
+                    codeDiv.style.display = "none";
+                }
+
+                if (progress >= 100) {
+                    isPlaying = false;
+                    controlBtn.innerText = "PLAY";
+                    statusText.innerText = "[ KONIEC TRANSMISJI. BRAK SYGNAŁU ]";
+                    clearInterval(interval);
+                }
+            }, 150); // Szybkość odtwarzania (150ms na każdy procent)
+        }
+    }
+</script>
+
+</body>
+</html>
